@@ -1,0 +1,266 @@
+/*
+ * Custom Stylesheet
+ *
+ * Use this file for custom CSS that is difficult or verbose to achieve with Tailwind CSS utilities.
+ */
+
+body {
+  background-color: #000; /* Black base for the background */
+  overflow: hidden; /* Hide body scrollbars, as main content will scroll */
+  color: #f1f5f9; /* Default text color to light grey */
+}
+
+/* === Animated Background === */
+@keyframes move-blobs {
+  0% { transform: translate(0, 0) rotate(0deg); }
+  25% { transform: translate(40vw, -30vh) rotate(90deg); }
+  50% { transform: translate(-20vw, 20vh) rotate(0deg); }
+  75% { transform: translate(30vw, 30vh) rotate(-90deg); }
+  100% { transform: translate(0, 0) rotate(0deg); }
+}
+
+@keyframes move-blobs-2 {
+  0% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(-40vw, 10vh) scale(1.2); }
+  100% { transform: translate(0, 0) scale(1); }
+}
+
+#background-wrap {
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 0; /* Changed from -1 to sit on top of body background */
+  overflow: hidden;
+  filter: blur(60px);
+}
+
+#root {
+  position: relative;
+  z-index: 1; /* Ensure app content is above the background */
+}
+
+#background-wrap::before,
+#background-wrap::after {
+  content: '';
+  position: absolute;
+  border-radius: 50%;
+}
+
+/* Layer 1 */
+#background-wrap::before {
+  width: 50vmax;
+  height: 50vmax;
+  background: radial-gradient(circle, #355E3B, #FFD700, #4169E1);
+  top: 50%;
+  left: 50%;
+  mix-blend-mode: screen;
+  animation: move-blobs 25s ease-in-out infinite alternate;
+}
+
+/* Layer 2 */
+#background-wrap::after {
+  width: 40vmax;
+  height: 40vmax;
+  background: radial-gradient(circle, #CCFF00, #4169E1, #000000);
+  top: 10%;
+  left: 10%;
+  mix-blend-mode: screen;
+  animation: move-blobs-2 30s ease-in-out infinite alternate;
+}
+
+
+/* === Glassmorphism UI Elements === */
+.glassmorphism {
+  background: rgba(115, 76, 255, 0.1); /* Purple shaded glass */
+  backdrop-filter: blur(16px) saturate(150%);
+  -webkit-backdrop-filter: blur(16px) saturate(150%);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+}
+
+.card-3d-hover {
+  transform-style: preserve-3d;
+  transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), border 0.4s ease;
+}
+
+.card-3d-hover:hover {
+  transform: perspective(1000px) rotateY(-8deg) rotateX(10deg) scale3d(1.05, 1.05, 1.05);
+  box-shadow: 0px 20px 40px rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(209, 196, 255, 0.4);
+}
+
+
+/* === Form Input Styling === */
+.glass-input {
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #e2e8f0; /* slate-200 */
+  transition: background 0.2s, border 0.2s;
+}
+
+.glass-input:focus {
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(196, 181, 253, 0.7); /* A light purple */
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(167, 139, 250, 0.3);
+}
+
+.glass-input::placeholder {
+  color: #94a3b8; /* slate-400 */
+  opacity: 1;
+}
+
+.glass-input.error {
+    border-color: #f87171; /* red-400 */
+    box-shadow: 0 0 0 2px rgba(248, 113, 113, 0.2);
+}
+
+.form-error {
+    color: #fca5a5; /* red-300 */
+    font-size: 0.8rem;
+    margin-top: 0.25rem;
+    animation: fade-in-down 0.3s ease-out;
+}
+
+@keyframes fade-in-down {
+    from {
+        opacity: 0;
+        transform: translateY(-5px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Fade in animation for new UI elements */
+@keyframes fade-in {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+.animate-fade-in {
+    animation: fade-in 0.5s ease-in-out;
+}
+
+
+/* === Custom Scrollbar for dark theme === */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(255, 255, 255, 0.4);
+}
+
+/* For Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.2) rgba(255, 255, 255, 0.05);
+}
+
+.custom-scrollbar-dark {
+  overflow-y: auto;
+}
+
+/* === Music Player === */
+.music-player-fab {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  z-index: 1000;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.music-player-fab:hover {
+  transform: scale(1.1);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+}
+
+.music-player-fab .icon-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.music-player-fab .music-icon,
+.music-player-fab .play-pause-icon {
+  position: absolute;
+  transition: transform 0.5s ease, opacity 0.5s ease;
+}
+
+.music-player-fab .music-icon.playing {
+  animation: spin 8s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* === Document Specific Styles === */
+
+/* Base style for letter size portrait page */
+.document-page {
+  width: 8.5in;
+  height: 11in;
+  box-sizing: border-box;
+  page-break-after: always; /* Ensure each .document-page prints on a new physical page */
+}
+
+/* Funeral Program Booklet Styles */
+
+/* A container for the two physical sheets that make up the booklet */
+.physical-sheets-container {
+  display: flex; /* Arrange physical sheets side by side in preview */
+  flex-wrap: wrap; /* Allow wrapping if space is constrained */
+  gap: 2rem; /* Space between sheets in preview */
+  justify-content: center;
+}
+
+/* Each 'physical sheet' represents one side of a piece of paper (A4/Letter landscape) */
+.physical-sheet {
+  width: 11in;  /* Letter size width in landscape */
+  height: 8.5in; /* Letter size height in landscape */
+  display: flex; /* To arrange two booklet pages side by side */
+  box-sizing: border-box;
+  overflow: hidden; /* Important to prevent content overflow issues */
+  page-break-after: always; /* Each physical sheet on a new page */
+}
+
+/* Each 'booklet page' is one half of the physical sheet */
+.booklet-page {
+  width: 5.5in; /* Half of 11in */
+  height: 8.5in; /* Full height */
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  text-align: left; /* Default text alignment */
+  position: relative;
+  overflow: hidden; /* Prevent text overflow from breaking layout */
+}
